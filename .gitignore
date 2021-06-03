@@ -1,0 +1,10 @@
+
+.DS_Store
+
+**/node_modules/
+
+*.lock
+
+package-lock.json
+
+sdoh.geojson

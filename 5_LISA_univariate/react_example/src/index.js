@@ -36,9 +36,14 @@ class App extends Component {
       .then((data) => {
         // load geojson in jsgeoda, an unique id (string) will be returned for further usage
         const nat = geoda.read_geojson(data);
+        const w = geoda.queen_weights(nat);
         const hr60 = geoda.get_col(nat, "HR60");
-        const cb = geoda.custom_breaks(nat, "natural_breaks", hr60, 5);
+        const lm = geoda.local_moran(w, hr60, 999, 'lookup');
 
+        const ue60 = geoda.get_col(nat, "UE60");
+        const nmt = geoda.neighbor_match_test(nat, 5, [hr60, ue60]);
+
+        const lm_colors = lm.colors.map(c=>c.toLowerCase().match(/[0-9a-f]{2}/g).map((x) => parseInt(x, 16)));
         // Viewport settings
         const view_port = geoda.get_viewport(nat, window.innerHeight, window.innerWidth);
 
@@ -47,7 +52,7 @@ class App extends Component {
           id: "GeoJsonLayer",
           data: DATA_URL,
           filled: true,
-          getFillColor: (f) => this.getFillColor(f, cb.breaks),
+          getFillColor: (f) => this.getFillColor(f, lm.clusters, lm_colors),
           stroked: true,
           pickable: true
         });
@@ -69,14 +74,10 @@ class App extends Component {
   }
 
   // Determine which color for which geometry
-  getFillColor(f, breaks) {
-    for (let i = 1; i < breaks.length; ++i) {
-      if (f.properties.HR60 < breaks[i]) {
-        return colorbrewer.YlOrBr[breaks.length - 1][i - 1]
-          .match(/[0-9a-f]{2}/g)
-          .map((x) => parseInt(x, 16));
-      }
-    }
+  getFillColor(f, clusters, colors) {
+    const i = f.properties.POLY_ID - 1;
+    const c = clusters[i];
+    return colors[c];
   }
 
   render() {

@@ -1,0 +1,15 @@
+{
+  "name": "basic_mapping",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "Xun Li <lixun910@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "jsgeoda": "file:../../../jsgeoda",
+    "node-fetch": "^2.6.1"
+  }
+}
