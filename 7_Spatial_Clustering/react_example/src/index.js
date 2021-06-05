@@ -39,8 +39,14 @@ class App extends Component {
         const w = geoda.queen_weights(nat);
         const hr60 = geoda.get_col(nat, "HR60");
         const ue60 = geoda.get_col(nat, "UE60");
-        const redcap = geoda.azp_greedy(w, 10, [hr60, ue60]);
+        const po60 = geoda.get_col(nat, "PO60");
+        const redcap = geoda.skater(w, 10, [hr60, ue60], 17845200, po60);
+        //const redcap = geoda.redcap(w, 10, [hr60, ue60], "fullorder-wardlinkage", 17845200, po60);
+        //const redcap = geoda.azp_tabu(w, 20, [hr60, ue60], 10, 10, 1, [], [po60],[17845200]);
+        //const redcap = geoda.azp_sa(w, 20, [hr60, ue60], 0.85, 1, 1, [], [po60],[17845200]);
+        //const redcap = geoda.maxp_greedy(w, [hr60, ue60],  1, [po60],[17845200]);
         const colors = colorbrewer['Paired'][10].map(c=>c.toLowerCase().match(/[0-9a-f]{2}/g).map((x) => parseInt(x, 16)));
+        
         // Viewport settings
         const view_port = geoda.get_viewport(nat, window.innerHeight, window.innerWidth);
 
