@@ -35,11 +35,11 @@ class App extends Component {
       .then((res) => res.arrayBuffer())
       .then((data) => {
         // load geojson in jsgeoda, an unique id (string) will be returned for further usage
-        const nat = geoda.read_geojson(data);
-        const w = geoda.queen_weights(nat);
-        const hr60 = geoda.get_col(nat, "HR60");
-        const ue60 = geoda.get_col(nat, "UE60");
-        const po60 = geoda.get_col(nat, "PO60");
+        const nat = geoda.readGeoJSON(data);
+        const w = geoda.getQueenWeights(nat);
+        const hr60 = geoda.getCol(nat, "HR60");
+        const ue60 = geoda.getCol(nat, "UE60");
+        const po60 = geoda.getCol(nat, "PO60");
         const redcap = geoda.skater(w, 10, [hr60, ue60], 17845200, po60);
         //const redcap = geoda.redcap(w, 10, [hr60, ue60], "fullorder-wardlinkage", 17845200, po60);
         //const redcap = geoda.azp_tabu(w, 20, [hr60, ue60], 10, 10, 1, [], [po60],[17845200]);
@@ -48,7 +48,7 @@ class App extends Component {
         const colors = colorbrewer['Paired'][10].map(c=>c.toLowerCase().match(/[0-9a-f]{2}/g).map((x) => parseInt(x, 16)));
         
         // Viewport settings
-        const view_port = geoda.get_viewport(nat, window.innerHeight, window.innerWidth);
+        const view_port = geoda.getViewport(nat, window.innerHeight, window.innerWidth);
 
         // Create GeoJsonLayer
         const layer = new GeoJsonLayer({

@@ -8,7 +8,7 @@ import jsgeoda from "jsgeoda";
 
 // Set your mapbox access token here
 const MAPBOX_TOKEN =
-  "pk.eyJ1IjoibGl4dW45MTAiLCJhIjoiY2locXMxcWFqMDAwenQ0bTFhaTZmbnRwaiJ9.VRNeNnyb96Eo-CorkJmIqg";
+  'pk.eyJ1IjoibGl4dW45MTAiLCJhIjoiY2locXMxcWFqMDAwenQ0bTFhaTZmbnRwaiJ9.VRNeNnyb96Eo-CorkJmIqg';
 
 // The geojson data
 const DATA_URL = `https://webgeoda.github.io/data/guerry.geojson`;
@@ -37,7 +37,7 @@ class App extends Component {
 
   createGeojsonLayer() {
     return new GeoJsonLayer({
-      id: "GeoJsonLayer",
+      id: 'GeoJsonLayer',
       data: DATA_URL,
       filled: true,
       getFillColor: [230,230,230],
@@ -83,11 +83,11 @@ class App extends Component {
       .then((res) => res.arrayBuffer())
       .then((data) => {
         // load geojson in jsgeoda, an unique id (string) will be returned for further usage
-        const guerry = geoda.read_geojson(data);
-        const w = geoda.queen_weights(guerry);
-        const {arcs, targets, sources} = geoda.get_connectivity(w);
+        const guerry = geoda.readGeoJSON(data);
+        const w = geoda.getQueenWeights(guerry);
+        const {arcs, targets, sources} = geoda.getConnectivity(w);
 
-        geoda.spatial_lag(w, geoda.get_col(guerry,"Crm_prs"), true, false,false);
+        geoda.spatialLag(w, geoda.getCol(guerry,"Crm_prs"), true, false,false);
 
         // Create GeoJsonLayer
         const layer = this.createGeojsonLayer();
@@ -96,7 +96,7 @@ class App extends Component {
         const conn_layer  = this.createConnectivityLayer(arcs);
 
         // Viewport settings
-        const view_port = geoda.get_viewport(guerry, window.innerHeight, window.innerWidth);
+        const view_port = geoda.getViewport(guerry, window.innerHeight, window.innerWidth);
 
         // Trigger to draw map
         this.setState({

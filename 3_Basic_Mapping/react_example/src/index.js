@@ -4,7 +4,7 @@ import DeckGL from "@deck.gl/react";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { StaticMap } from "react-map-gl";
 import colorbrewer from "colorbrewer";
-import jsgeoda from "jsgeoda";
+import * as jsgeoda from "jsgeoda";
 
 // Set your mapbox access token here
 const MAPBOX_TOKEN =
@@ -18,7 +18,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      mapId: "",
+      mapId: '',
       layer: null,
       viewPort: {
         longitude: -100.4,
@@ -35,16 +35,16 @@ class App extends Component {
       .then((res) => res.arrayBuffer())
       .then((data) => {
         // load geojson in jsgeoda, an unique id (string) will be returned for further usage
-        const nat = geoda.read_geojson(data);
-        const hr60 = geoda.get_col(nat, "HR60");
-        const cb = geoda.custom_breaks(nat, "natural_breaks", hr60, 5);
+        const nat = geoda.readGeoJSON(data);
+        const hr60 = geoda.getCol(nat, 'HR60');
+        const cb = geoda.customBreaks('naturalBreaks', hr60, 5);
 
         // Viewport settings
-        const view_port = geoda.get_viewport(nat, window.innerHeight, window.innerWidth);
+        const view_port = geoda.getViewport(nat, window.innerHeight, window.innerWidth);
 
         // Create GeoJsonLayer
         const layer = new GeoJsonLayer({
-          id: "GeoJsonLayer",
+          id: 'GeoJsonLayer',
           data: DATA_URL,
           filled: true,
           getFillColor: (f) => this.getFillColor(f, cb.breaks),
